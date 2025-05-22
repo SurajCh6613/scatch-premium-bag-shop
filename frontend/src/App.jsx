@@ -1,5 +1,6 @@
 import Navbar from "./components/Navbar";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import Hero from "./pages/Hero";
 
 function App() {
   return (
@@ -7,10 +8,9 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/" />
+          <Route path="/" element={<Hero />} />
         </Routes>
       </BrowserRouter>
-      <div>Suraj Chaudhary</div>
     </>
   );
 }
