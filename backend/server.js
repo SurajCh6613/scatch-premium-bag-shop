@@ -1,6 +1,7 @@
 require('dotenv').config({path:'./config/.env'});
 const express = require('express');
 const connectDB = require('./config/db');
+const cookieParser = require('cookie-parser')
 const userRoutes = require('./routes/userRoutes')
 const cors = require('cors');
 
@@ -11,6 +12,8 @@ connectDB();
 app.use(cors()) //  allow all origin
 // app.use(cors({origin:'http://localhost:5173'})) //  allow specific origin 5173
 app.use(express.json()) // Middleware to parse json
+app.use(cookieParser())
+
 app.use('/api/users',userRoutes)
 
 app.get("/",(req,res)=>{
