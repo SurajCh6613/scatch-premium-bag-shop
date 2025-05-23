@@ -5,7 +5,7 @@ import { FaRegHeart, FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
 const Navbar = () => {
   return (
     <div className="flex justify-between p-4 shadow">
-      <div className="text-2xl">Scatch</div>
+      <Link to='/' className="text-2xl">Scatch</Link>
       <div className="">
         <ul className="flex gap-8  pr-4">
           <Link>New Launches</Link>
@@ -16,7 +16,7 @@ const Navbar = () => {
           <Link>Under 1999</Link>
           <Link>Combo Sets</Link>
           <Link>Summer Essential</Link>
-          <Link>
+          <Link to='/login'>
             <FaUser />
           </Link>
           <Link>
