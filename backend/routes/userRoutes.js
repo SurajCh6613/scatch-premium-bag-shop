@@ -1,10 +1,11 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
+const generateToken = require("../middlewares/generateToken");
 const router = express.Router();
 
-const registerUser = async (req, res) => {
+// Register user route
+router.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
@@ -19,7 +20,6 @@ const registerUser = async (req, res) => {
 
     // Hashing Password
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(hashedPassword);
 
     const newUser = new User({
       name,
@@ -33,14 +33,9 @@ const registerUser = async (req, res) => {
     console.error("Registration error:", error); // Log error in console
     setMessage(error.message || "Something went wrong");
   }
-};
-
-router.post("/register", registerUser);
-
-router.get("/login", (req, res) => {
-  res.send("Login User");
 });
 
+// Login user route
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
@@ -53,7 +48,17 @@ router.post("/login", async (req, res) => {
   if (!isPasswordMatched) {
     return res.status(400).json({ message: "Something wrong" });
   }
-  res.status(201).json({ message: "You can Login" });
+
+  const token = generateToken(user._id);
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 Days
+  });
+  res.status(201).json({ message: "Logged in successfully", user });
 });
+
+
 
 module.exports = router;
